@@ -65,7 +65,7 @@ function displayMessage(message, sender) {
 // Simulate AI response (Replace with DeepSeek API later)
 async function getAIResponse(userMessage) {
     const API_URL = "https://api.deepseek.com/v1/chat/completions"; // Check actual API endpoint
-    const API_KEY = "sk-37784acef1074ff5a51d0a26ecede385"; // 🔴 Replace with your actual key
+    const API_KEY = sk-37784acef1074ff5a51d0a26ecede385; // 🔴 Replace with your actual key
 
     try {
         const response = await fetch(API_URL, {
