@@ -100,7 +100,7 @@ async function getAIResponse(userMessage) {
 
 // Speak AI response
 function speak(text) {
-    const language = document.getElementById("language-select").value;
+    const language = 'es';
     const utterance = new SpeechSynthesisUtterance(text);
     
     // Prioritize voices for the selected language
