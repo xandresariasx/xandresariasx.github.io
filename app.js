@@ -99,22 +99,22 @@ async function getAIResponse(userMessage) {
 
 // Speak AI response
 function speak(text) {
-    const language = 'es';
+    //const language = 'es';
     const utterance = new SpeechSynthesisUtterance(text);
     
     // Prioritize voices for the selected language
-    const voices = window.speechSynthesis.getVoices();
-    let desiredVoice;
+    //const voices = window.speechSynthesis.getVoices();
+    //let desiredVoice;
     
-    if (language === 'es') {
-        desiredVoice = voices.find(v => v.lang === 'es-CO') || 
-                       voices.find(v => v.lang === 'es-419') || 
-                       voices.find(v => v.lang.startsWith('es-'));
-    } else {
-        desiredVoice = voices.find(v => v.lang === 'en-US');
-    }
+    //if (language === 'es') {
+    //    desiredVoice = voices.find(v => v.lang === 'es-CO') || 
+    //                   voices.find(v => v.lang === 'es-419') || 
+    //                   voices.find(v => v.lang.startsWith('es-'));
+    //} else {
+    //    desiredVoice = voices.find(v => v.lang === 'en-US');
+    //}
     
-    utterance.voice = desiredVoice || voices[0];
+    //utterance.voice = desiredVoice || voices[0];
     //window.speechSynthesis.speak(utterance);
     synth.speak(utterance);
 }
