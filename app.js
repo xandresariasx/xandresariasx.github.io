@@ -100,31 +100,7 @@ async function getAIResponse(userMessage) {
 // Speak AI response
 function speak(text) {
     const utterance = new SpeechSynthesisUtterance(text);
-    const voices = window.speechSynthesis.getVoices();
-    
-    // 1. Try to find a Colombian Spanish voice (es-CO)
-    let desiredVoice = voices.find(voice => 
-        voice.lang === 'es-CO' || voice.name.includes('Colombia')
-    );
-
-    // 2. Fallback to Latin American Spanish (es-419, es-MX, es-AR, etc.)
-    if (!desiredVoice) {
-        desiredVoice = voices.find(voice => 
-            voice.lang === 'es-419' || // General Latin America
-            voice.lang === 'es-MX' || // Mexican Spanish
-            voice.lang === 'es-AR' || // Argentine Spanish
-            voice.lang.startsWith('es-') // Any Spanish
-        );
-    }
-
-    // 3. If no Spanish voice, use the default (first available)
-    utterance.voice = desiredVoice || voices[0];
-    
-    // Adjust speech settings
-    utterance.rate = 1.0;  // Speed (0.5 - 2.0)
-    utterance.pitch = 1.0; // Pitch (0 - 2)
-    
-    window.speechSynthesis.speak(utterance);
+    synth.speak(utterance);
 }
 
 // Event listeners
