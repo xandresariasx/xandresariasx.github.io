@@ -37,20 +37,21 @@ recognition.addEventListener("result", (e) => {
 });
 
 // Send message function
-async function sendMessage() {
+function sendMessage() {
     const message = userInput.value.trim();
     if (!message) return;
 
+    // Display user message
     displayMessage(message, "user");
-    userInput.value = ""; // Clear input immediately
 
-    try {
-        const aiResponse = await getAIResponse(message); // Wait for API response
+    // Simulate AI response (replace with actual API call)
+    setTimeout(() => {
+        const aiResponse = getAIResponse(message);
         displayMessage(aiResponse, "ai");
         speak(aiResponse); // Text-to-speech
-    } catch (error) {
-        displayMessage("Error connecting to AI.", "ai");
-    }
+    }, 1000);
+
+    userInput.value = "";
 }
 
 // Display message in chat
@@ -63,7 +64,7 @@ function displayMessage(message, sender) {
 }
 
 // Simulate AI response (Replace with DeepSeek API later)
-async function getAIResponse(userMessage) {
+function getAIResponse(userMessage) {
     const responses = [
         "I'm an AI assistant. How can I help you?",
         "Interesting! Tell me more.",
@@ -71,61 +72,12 @@ async function getAIResponse(userMessage) {
         "Thanks for your message!"
     ];
     return responses[Math.floor(Math.random() * responses.length)];
-    //const API_URL = "https://api.deepseek.com/v1/chat/completions"; // Check actual API endpoint
-    //const API_KEY = "sk-37784acef1074ff5a51d0a26ecede385"; // 🔴 Replace with your actual key
-
-    //try {
-    //    const response = await fetch(API_URL, {
-    //        method: "POST",
-    //        headers: {
-    //            "Content-Type": "application/json",
-    //            "Authorization": `Bearer ${API_KEY}`
-    //        },
-    //        body: JSON.stringify({
-    //            model: "deepseek-chat", // Confirm model name
-    //            messages: [
-    //                { role: "user", content: userMessage }
-    //            ],
-    //            temperature: 0.7, // Adjust creativity (0-1)
-    //            max_tokens: 150 // Limit response length
-    //        })
-    //    });
-
-    //    if (!response.ok) {
-    //        throw new Error(`API Error: ${response.status}`);
-    //    }
-
-    //    const data = await response.json();
-    //    return data.choices[0].message.content; // Extract AI reply
-
-    //} catch (error) {
-    //    console.error("DeepSeek API Error:", error);
-    //    return "Sorry, I couldn't fetch a response. Please try again.";
-    //}
 }
 
 // Speak AI response
 function speak(text) {
     const utterance = new SpeechSynthesisUtterance(text);
     synth.speak(utterance);
-    
-    //const language = document.getElementById("language-select").value;
-    //const utterance = new SpeechSynthesisUtterance(text);
-    
-    // Prioritize voices for the selected language
-    //const voices = window.speechSynthesis.getVoices();
-    //let desiredVoice;
-    
-    //if (language === 'es') {
-    //    desiredVoice = voices.find(v => v.lang === 'es-CO') || 
-    //                   voices.find(v => v.lang === 'es-419') || 
-    //                   voices.find(v => v.lang.startsWith('es-'));
-    //} else {
-    //    desiredVoice = voices.find(v => v.lang === 'en-US');
-    //}
-    
-    //utterance.voice = desiredVoice || voices[0];
-    //window.speechSynthesis.speak(utterance);
 }
 
 // Event listeners
