@@ -64,14 +64,38 @@ function displayMessage(message, sender) {
 }
 
 // Simulate AI response (Replace with DeepSeek API later)
-function getAIResponse(userMessage) {
-    const responses = [
-        "I'm an AI assistant. How can I help you?",
-        "Interesting! Tell me more.",
-        "I don't have a real API connection yet, but you can integrate DeepSeek later!",
-        "Thanks for your message!"
-    ];
-    return responses[Math.floor(Math.random() * responses.length)];
+async function getAIResponse(userMessage) {   
+    const API_URL = "https://api.deepseek.com/v1/chat/completions"; // Check actual API endpoint
+    const API_KEY = "sk-37784acef1074ff5a51d0a26ecede385"; // 🔴 Replace with your actual key
+
+    try {
+       const response = await fetch(API_URL, {
+           method: "POST",
+           headers: {
+               "Content-Type": "application/json",
+               "Authorization": `Bearer ${API_KEY}`
+           },
+           body: JSON.stringify({
+               model: "deepseek-chat", // Confirm model name
+               messages: [
+                   { role: "user", content: userMessage }
+               ],
+               temperature: 0.7, // Adjust creativity (0-1)
+               max_tokens: 150 // Limit response length
+           })
+       });
+
+       if (!response.ok) {
+           throw new Error(`API Error: ${response.status}`);
+       }
+
+       const data = await response.json();
+       return data.choices[0].message.content; // Extract AI reply
+
+    } catch (error) {
+       console.error("DeepSeek API Error:", error);
+       return "Sorry, I couldn't fetch a response. Please try again.";
+    }
 }
 
 // Speak AI response
