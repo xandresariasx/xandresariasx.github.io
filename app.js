@@ -37,21 +37,20 @@ recognition.addEventListener("result", (e) => {
 });
 
 // Send message function
-function sendMessage() {
+async function sendMessage() {
     const message = userInput.value.trim();
     if (!message) return;
 
-    // Display user message
     displayMessage(message, "user");
+    userInput.value = ""; // Clear input immediately
 
-    // Simulate AI response (replace with actual API call)
-    setTimeout(() => {
-        const aiResponse = getAIResponse(message);
+    try {
+        const aiResponse = await getAIResponse(message); // Wait for API response
         displayMessage(aiResponse, "ai");
         speak(aiResponse); // Text-to-speech
-    }, 1000);
-
-    userInput.value = "";
+    } catch (error) {
+        displayMessage("Error connecting to AI.", "ai");
+    }
 }
 
 // Display message in chat
