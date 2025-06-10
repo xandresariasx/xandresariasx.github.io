@@ -115,7 +115,8 @@ function speak(text) {
     }
     
     utterance.voice = desiredVoice || voices[0];
-    window.speechSynthesis.speak(utterance);
+    //window.speechSynthesis.speak(utterance);
+    synth.speak(utterance);
 }
 
 // Event listeners
