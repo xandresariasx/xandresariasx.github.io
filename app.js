@@ -99,8 +99,23 @@ async function getAIResponse(userMessage) {
 
 // Speak AI response
 function speak(text) {
+    const language = document.getElementById("language-select").value;
     const utterance = new SpeechSynthesisUtterance(text);
-    synth.speak(utterance);
+    
+    // Prioritize voices for the selected language
+    const voices = window.speechSynthesis.getVoices();
+    let desiredVoice;
+    
+    if (language === 'es') {
+        desiredVoice = voices.find(v => v.lang === 'es-CO') || 
+                       voices.find(v => v.lang === 'es-419') || 
+                       voices.find(v => v.lang.startsWith('es-'));
+    } else {
+        desiredVoice = voices.find(v => v.lang === 'en-US');
+    }
+    
+    utterance.voice = desiredVoice || voices[0];
+    window.speechSynthesis.speak(utterance);
 }
 
 // Event listeners
