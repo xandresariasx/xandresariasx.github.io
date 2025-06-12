@@ -107,8 +107,8 @@ function speak(text) {
     let desiredVoice;
     
     //if (language === 'es') {
-        desiredVoice = voices.find(v => v.lang === 'es-CO');// || 
-    //                   voices.find(v => v.lang === 'es-419') || 
+       // desiredVoice = voices.find(v => v.lang === 'es-CO');// || 
+        desiredVoice = voices.find(v => v.lang === 'es-419');// || 
     //                   voices.find(v => v.lang.startsWith('es-'));
     //} else {
     //    desiredVoice = voices.find(v => v.lang === 'en-US');
