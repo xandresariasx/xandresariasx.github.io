@@ -114,7 +114,7 @@ function speak(text) {
     //    desiredVoice = voices.find(v => v.lang === 'en-US');
     //}
     
-    utterance.voice = desiredVoice || voices[0];
+    utterance.voice = desiredVoice;// || voices[0];
     window.speechSynthesis.speak(utterance);
     synth.speak(utterance);
 }
