@@ -108,7 +108,8 @@ function speak(text) {
     
     //if (language === 'es') {
        // desiredVoice = voices.find(v => v.lang === 'es-CO');// || 
-        desiredVoice = voices.find(v => v.lang === 'es-419');// || 
+        //desiredVoice = voices.find(v => v.lang === 'es-419');// || es-ES
+        desiredVoice = voices.find(v => v.lang === 'es-ES');
     //                   voices.find(v => v.lang.startsWith('es-'));
     //} else {
     //    desiredVoice = voices.find(v => v.lang === 'en-US');
