@@ -98,8 +98,15 @@ async function getAIResponse(userMessage) {
 }
 
 // Speak AI response
+let isSpeaking = false;
+
 function speak(text) {
     //const language = 'es';
+    if (isSpeaking) {
+        window.speechSynthesis.cancel(); // Stop current speech
+    }
+    isSpeaking = true;
+    
     const utterance = new SpeechSynthesisUtterance(text);
     
     // Prioritize voices for the selected language
@@ -116,6 +123,13 @@ function speak(text) {
     //}
     
     utterance.voice = desiredVoice;// || voices[0];
+    utterance.rate = 1.0;    
+    utterance.onend = () => {
+        isSpeaking = false;
+    };    
+    utterance.onerror = () => {
+        isSpeaking = false;
+    };
     window.speechSynthesis.speak(utterance);
     synth.speak(utterance);
 }
