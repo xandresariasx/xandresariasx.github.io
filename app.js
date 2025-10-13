@@ -97,6 +97,18 @@ async function getAIResponse(userMessage) {
     }
 }
 
+
+function cleanTextForSpeech(text) {
+    return text
+        // Remove ALL non-ASCII characters (including emojis)
+        .replace(/[^\x00-\x7F]/g, '') // Removes anything not in basic ASCII
+        // Remove problematic punctuation
+        .replace(/\.{2,}/g, '.')
+        .replace(/[!,;:?]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
 // Speak AI response
 let isSpeaking = false;
 
@@ -106,8 +118,9 @@ function speak(text) {
         window.speechSynthesis.cancel(); // Stop current speech
     }
     isSpeaking = true;
-    
-    const utterance = new SpeechSynthesisUtterance(text);
+
+    const cleanText = cleanTextForSpeech(text);
+    const utterance = new SpeechSynthesisUtterance(cleanText);
     
     // Prioritize voices for the selected language
     const voices = window.speechSynthesis.getVoices();
