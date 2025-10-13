@@ -131,7 +131,7 @@ function speak(text) {
         isSpeaking = false;
     };
     window.speechSynthesis.speak(utterance);
-    synth.speak(utterance);
+    //synth.speak(utterance);
 }
 
 // Event listeners
