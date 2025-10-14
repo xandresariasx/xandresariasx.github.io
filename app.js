@@ -1,3 +1,23 @@
+// DOM Elements - Updated IDs to match your new HTML
+const conversationMessages = document.getElementById("conversation-messages");
+const userInput = document.getElementById("user-input");
+const sendButton = document.getElementById("send-button");
+const voiceButton = document.getElementById("voice-button"); // Changed from micButton to voiceButton
+
+// Speech Recognition (Web Speech API)
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const recognition = new SpeechRecognition();
+recognition.interimResults = false;
+recognition.lang = 'es-ES'; // Changed to Spanish
+
+// Speech Synthesis (Text-to-Speech)
+const synth = window.speechSynthesis;
+
+// Speech state management
+let isSpeaking = false;
+let isProcessing = false;
+
+// Character animation elements
 const typingIndicator = document.getElementById('typing-indicator');
 const statusDot = document.querySelector('.status-dot');
 const statusText = document.querySelector('.status-text');
@@ -23,7 +43,38 @@ function setCharacterStatus(status, color) {
     statusText.style.color = color;
 }
 
-// Updated sendMessage with professional animations
+// Voice recognition with visual feedback
+voiceButton.addEventListener("click", () => {
+    if (voiceButton.classList.contains("listening")) {
+        recognition.stop();
+        voiceButton.classList.remove("listening");
+        voiceButton.textContent = "🎤";
+        userInput.placeholder = "Escribe tu mensaje...";
+    } else {
+        recognition.start();
+        voiceButton.classList.add("listening");
+        voiceButton.textContent = "🔴";
+        userInput.placeholder = "Escuchando...";
+    }
+});
+
+// Speech recognition result
+recognition.addEventListener("result", (e) => {
+    const transcript = Array.from(e.results)
+        .map(result => result[0])
+        .map(result => result.transcript)
+        .join("");
+    userInput.value = transcript;
+    sendMessage(); // Auto-send after speech
+});
+
+recognition.addEventListener("end", () => {
+    voiceButton.classList.remove("listening");
+    voiceButton.textContent = "🎤";
+    userInput.placeholder = "Escribe tu mensaje...";
+});
+
+// Send message function
 async function sendMessage() {
     if (isProcessing) return;
     
@@ -53,7 +104,7 @@ async function sendMessage() {
     }
 }
 
-// Updated displayMessage with timestamps
+// Display message in chat with timestamps
 function displayMessage(message, sender) {
     const messageElement = document.createElement("div");
     messageElement.classList.add("message", `${sender}-message`);
@@ -71,6 +122,9 @@ function displayMessage(message, sender) {
     
     conversationMessages.appendChild(messageElement);
     conversationMessages.scrollTop = conversationMessages.scrollHeight;
+    
+    // Add fade-in effect
+    addMessageEffect(messageElement);
 }
 
 // Add message effects
@@ -85,74 +139,10 @@ function addMessageEffect(messageElement) {
     }, 50);
 }
 
-// DOM Elements
-const chatMessages = document.getElementById("chat-messages");
-const userInput = document.getElementById("user-input");
-const sendButton = document.getElementById("send-button");
-const micButton = document.getElementById("mic-button");
-
-// Speech Recognition (Web Speech API)
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const recognition = new SpeechRecognition();
-recognition.interimResults = false;
-recognition.lang = 'en-US';
-
-// Speech Synthesis (Text-to-Speech)
-const synth = window.speechSynthesis;
-
-// Toggle microphone
-micButton.addEventListener("click", () => {
-    if (micButton.textContent === "🎤") {
-        recognition.start();
-        micButton.textContent = "🔴";
-        userInput.placeholder = "Listening...";
-    } else {
-        recognition.stop();
-        micButton.textContent = "🎤";
-        userInput.placeholder = "Type your message...";
-    }
-});
-
-// Speech recognition result
-recognition.addEventListener("result", (e) => {
-    const transcript = Array.from(e.results)
-        .map(result => result[0])
-        .map(result => result.transcript)
-        .join("");
-    userInput.value = transcript;
-    sendMessage(); // Auto-send after speech
-});
-
-// Send message function
-async function sendMessage() {
-    const message = userInput.value.trim();
-    if (!message) return;
-
-    displayMessage(message, "user");
-    userInput.value = ""; // Clear input immediately
-
-    try {
-        const aiResponse = await getAIResponse(message); // Wait for API response
-        displayMessage(aiResponse, "ai");
-        speak(aiResponse); // Text-to-speech
-    } catch (error) {
-        displayMessage("Error connecting to AI.", "ai");
-    }
-}
-
-// Display message in chat
-function displayMessage(message, sender) {
-    const messageElement = document.createElement("div");
-    messageElement.classList.add("message", `${sender}-message`);
-    messageElement.textContent = message;
-    chatMessages.appendChild(messageElement);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-// Simulate AI response (Replace with DeepSeek API later)
+// DeepSeek API call
 async function getAIResponse(userMessage) {   
-    const API_URL = "https://api.deepseek.com/v1/chat/completions"; // Check actual API endpoint
-    const API_KEY = "sk-37784acef1074ff5a51d0a26ecede385"; // 🔴 Replace with your actual key
+    const API_URL = "https://api.deepseek.com/v1/chat/completions";
+    const API_KEY = "sk-37784acef1074ff5a51d0a26ecede385";
 
     try {
        const response = await fetch(API_URL, {
@@ -162,12 +152,12 @@ async function getAIResponse(userMessage) {
                "Authorization": `Bearer ${API_KEY}`
            },
            body: JSON.stringify({
-               model: "deepseek-chat", // Confirm model name
+               model: "deepseek-chat",
                messages: [
                    { role: "user", content: userMessage }
                ],
-               temperature: 0.7, // Adjust creativity (0-1)
-               max_tokens: 150 // Limit response length
+               temperature: 0.7,
+               max_tokens: 500 // Increased for better responses
            })
        });
 
@@ -176,18 +166,18 @@ async function getAIResponse(userMessage) {
        }
 
        const data = await response.json();
-       return data.choices[0].message.content; // Extract AI reply
+       return data.choices[0].message.content;
 
     } catch (error) {
        console.error("DeepSeek API Error:", error);
-       return "Sorry, I couldn't fetch a response. Please try again.";
+       return "Lo siento, no pudo obtener una respuesta. Por favor, intenta de nuevo.";
     }
 }
 
-
+// Text cleaning for speech
 function cleanTextForSpeech(text) {
     return text
-        // Remove emojis (target specific emoji ranges only)
+        // Remove emojis
         .replace(/[\u{1F300}-\u{1F9FF}]/gu, '')
         .replace(/[\u{2600}-\u{26FF}]/gu, '')
         .replace(/[\u{2700}-\u{27BF}]/gu, '')
@@ -201,41 +191,34 @@ function cleanTextForSpeech(text) {
 }
 
 // Speak AI response
-let isSpeaking = false;
-
 function speak(text) {
-    //const language = 'es';
     if (isSpeaking) {
-        window.speechSynthesis.cancel(); // Stop current speech
+        window.speechSynthesis.cancel();
     }
     isSpeaking = true;
 
     const cleanText = cleanTextForSpeech(text);
     const utterance = new SpeechSynthesisUtterance(cleanText);
     
-    // Prioritize voices for the selected language
+    // Wait for voices to load
     const voices = window.speechSynthesis.getVoices();
-    let desiredVoice;
+    let desiredVoice = voices.find(v => v.lang === 'es-US') || 
+                      voices.find(v => v.lang === 'es-ES') ||
+                      voices.find(v => v.lang.startsWith('es-')) ||
+                      voices[0];
     
-    //if (language === 'es') {
-       // desiredVoice = voices.find(v => v.lang === 'es-CO');// || 
-        //desiredVoice = voices.find(v => v.lang === 'es-419');// || es-ES
-        desiredVoice = voices.find(v => v.lang === 'es-ES');
-    //                   voices.find(v => v.lang.startsWith('es-'));
-    //} else {
-    //    desiredVoice = voices.find(v => v.lang === 'en-US');
-    //}
+    utterance.voice = desiredVoice;
+    utterance.rate = 1.0;
+    utterance.lang = 'es-ES'; // Set language to Spanish
     
-    utterance.voice = desiredVoice;// || voices[0];
-    utterance.rate = 1.0;    
     utterance.onend = () => {
         isSpeaking = false;
     };    
     utterance.onerror = () => {
         isSpeaking = false;
     };
+    
     window.speechSynthesis.speak(utterance);
-    //synth.speak(utterance);
 }
 
 // Event listeners
@@ -243,3 +226,8 @@ sendButton.addEventListener("click", sendMessage);
 userInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") sendMessage();
 });
+
+// Initialize voices
+window.speechSynthesis.onvoiceschanged = () => {
+    console.log("Voices loaded:", window.speechSynthesis.getVoices());
+};
