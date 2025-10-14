@@ -1,3 +1,90 @@
+const typingIndicator = document.getElementById('typing-indicator');
+const statusDot = document.querySelector('.status-dot');
+const statusText = document.querySelector('.status-text');
+
+// Professional character animations
+function showTypingIndicator() {
+    typingIndicator.style.display = 'block';
+    statusDot.style.background = '#f39c12';
+    statusText.textContent = 'Escribiendo...';
+    statusText.style.color = '#f39c12';
+}
+
+function hideTypingIndicator() {
+    typingIndicator.style.display = 'none';
+    statusDot.style.background = '#2ecc71';
+    statusText.textContent = 'En línea';
+    statusText.style.color = '#2ecc71';
+}
+
+function setCharacterStatus(status, color) {
+    statusDot.style.background = color;
+    statusText.textContent = status;
+    statusText.style.color = color;
+}
+
+// Updated sendMessage with professional animations
+async function sendMessage() {
+    if (isProcessing) return;
+    
+    const message = userInput.value.trim();
+    if (!message) return;
+
+    isProcessing = true;
+    displayMessage(message, "user");
+    userInput.value = "";
+
+    // Show typing indicator
+    showTypingIndicator();
+    setCharacterStatus('Pensando...', '#3498db');
+
+    try {
+        const aiResponse = await getAIResponse(message);
+        hideTypingIndicator();
+        setCharacterStatus('En línea', '#2ecc71');
+        displayMessage(aiResponse, "character");
+        speak(aiResponse);
+    } catch (error) {
+        hideTypingIndicator();
+        setCharacterStatus('Error de conexión', '#e74c3c');
+        displayMessage("Lo siento, hubo un error de conexión. Por favor, intenta de nuevo.", "character");
+    } finally {
+        isProcessing = false;
+    }
+}
+
+// Updated displayMessage with timestamps
+function displayMessage(message, sender) {
+    const messageElement = document.createElement("div");
+    messageElement.classList.add("message", `${sender}-message`);
+    
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('es-ES', { 
+        hour: '2-digit', 
+        minute: '2-digit' 
+    });
+    
+    messageElement.innerHTML = `
+        ${message}
+        <div class="message-time">${timeString}</div>
+    `;
+    
+    conversationMessages.appendChild(messageElement);
+    conversationMessages.scrollTop = conversationMessages.scrollHeight;
+}
+
+// Add message effects
+function addMessageEffect(messageElement) {
+    messageElement.style.opacity = '0';
+    messageElement.style.transform = 'translateY(20px)';
+    
+    setTimeout(() => {
+        messageElement.style.transition = 'all 0.3s ease';
+        messageElement.style.opacity = '1';
+        messageElement.style.transform = 'translateY(0)';
+    }, 50);
+}
+
 // DOM Elements
 const chatMessages = document.getElementById("chat-messages");
 const userInput = document.getElementById("user-input");
