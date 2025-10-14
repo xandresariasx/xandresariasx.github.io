@@ -100,8 +100,12 @@ async function getAIResponse(userMessage) {
 
 function cleanTextForSpeech(text) {
     return text
-        // Remove ALL non-ASCII characters (including emojis)
-        .replace(/[^\x00-\x7F]/g, '') // Removes anything not in basic ASCII
+        // Remove emojis (target specific emoji ranges only)
+        .replace(/[\u{1F300}-\u{1F9FF}]/gu, '')
+        .replace(/[\u{2600}-\u{26FF}]/gu, '')
+        .replace(/[\u{2700}-\u{27BF}]/gu, '')
+        // Remove other symbols but KEEP Spanish letters
+        .replace(/[^\w\u00C0-\u00FF\s.,!?;:()\-+='"@#$%&*\/\\]/g, '')
         // Remove problematic punctuation
         .replace(/\.{2,}/g, '.')
         .replace(/[!,;:?]/g, ' ')
