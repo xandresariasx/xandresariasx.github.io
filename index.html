@@ -1,313 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>Dr.Arias-Lorza</title>
-  <link rel="icon" type="image/x-icon" href="https://xandresariasx.github.io/Figures/favicon.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Conversation with Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .conversation-container {
+            width: 1000px;
+            height: 700px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Character Panel */
+        .character-panel {
+            width: 350px;
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px;
+            color: white;
+        }
+
+        .character-image-container {
+            width: 250px;
+            height: 250px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 25px;
+			justify-content: center;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border: 4px solid #ecf0f1;
+            background: #ecf0f1;
+        }
+
+        .character-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .character-info {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .character-name {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ecf0f1;
+            margin-bottom: 8px;
+        }
+
+        .character-title {
+            color: #bdc3c7;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .character-description {
+            color: #95a5a6;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .typing-indicator {
+            margin-top: 15px;
+            color: #3498db;
+            font-style: italic;
+            display: none;
+            background: rgba(52, 73, 94, 0.8);
+            padding: 8px 15px;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #2ecc71;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-text {
+            font-size: 12px;
+            color: #2ecc71;
+        }
+
+        /* Chat Panel */
+        .chat-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #f8f9fa;
+        }
+
+        .conversation-header {
+            background: white;
+            padding: 20px 30px;
+            border-bottom: 1px solid #dee2e6;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .conversation-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .conversation-subtitle {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .conversation-messages {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.03"><rect fill="%23667eea" width="100" height="100"/></svg>');
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 15px 20px;
+            border-radius: 18px;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+            line-height: 1.4;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .character-message {
+            background: white;
+            color: #2c3e50;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #3498db;
+        }
+
+        .message-time {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .input-area {
+            padding: 20px 30px;
+            background: white;
+            border-top: 1px solid #dee2e6;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        #user-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            outline: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        #user-input:focus {
+            border-color: #3498db;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .voice-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .voice-button:hover {
+            transform: scale(1.05);
+        }
+
+        .voice-button.listening {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4); }
+            50% { transform: scale(1.1); box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6); }
+            100% { transform: scale(1); box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4); }
+        }
+
+        .send-button {
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .send-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+    </style>
 </head>
-<header>
-<!-- <div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: 10px;margin-left: 10px;background-color:black">	
-<a style="color:Lime;font-size: 2em" href="#home">Home</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-<a style="color:Lime;font-size: 2em" href="#Projects">Projects</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a style="color:Lime;font-size: 2em" href="#Education">Education</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a style="color:Lime;font-size: 2em" href="#Publications">Publications</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	
-<a style="color:Lime;font-size: 2em" href="#Talks">Talks</a>
-<li>
-                <select style="color:Lime;font-size: 1.5em;background-color:black" id="language-selector">
-                    <option value="en">English</option>
-                    <option value="es">Español</option>
-                    <option value="pl">Polski</option>
-                </select>
-</li>
-</div>		 -->
-<div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -0px;background-color:black">	
-<p> &nbsp;</p>	
-<figure class="wp-block-image size-large is-resized" style="margin-right: 50px;margin-left: -10px"> <!-- Adjust the margin as needed --><br />
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-		  <img src="https://xandresariasx.github.io/Figures/Profile1_2.png" alt="" class="wp-image-21" style="width: 300px;height: auto" /><br />
-		</figure>
-<div>
-<h1 class="nfd-text-giga nfd-text-current md:nfd-no-br wp-block-heading has-text-align-right" style="font-size: 2em;text-align: right;line-height: 1;margin-top: -10px;color:White">Dr. Andres M. Arias Lorza</h1>
-<p style="text-align: right;font-size: 1em;line-height: 0.1;color:White"><i>Medical Imaging, Machine Learning, Data analysis</i></p>
-<div class="nfd-py-md wp-block-group" style="display: flex;align-items: right;justify-content: right;margin-top: 20px;margin-left: 10px;background-color:black">	
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<a href="http://linkedin.com/in/andres-m-arias-lorza-b3170757" target="_blank" class="w-inline-block"><i style="text-align: right;font-size:24px;color:White" 	class="fa">&#xf08c;</i></a>&nbsp;&nbsp;
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-	<a href="https://scholar.google.fr/citations?user=76kqOK8AAAAJ&hl=en" target="_blank" class="w-inline-block"><i style="text-align: right;font-size:24px;color:White" 	class="ai ai-google-scholar-square ai-3x"></i></a>&nbsp;;&nbsp;
-	<a href="https://github.com/xandresariasx" target="_blank" class="w-inline-block">
-	<i style="text-align: right;font-size:24px;color:White" class="fa">&#xf09b;</i></a>&nbsp;&nbsp;
-	<a href="mailto:xandresariasx@hotmail.com" target="_blank" class="w-inline-block">
-	<i style="text-align: right;font-size:24px;color:White" class="fa">&#xf0e0;</i></a>&nbsp;&nbsp;
-<!-- 	<a href="https://xandresariasx.github.io/Documents/CV_AndresArias_28.3.25.pdf" target="_blank" class="w-inline-block">
-	<i style="text-align: right;font-size:24px;color:White" class="fa">&#xf2bb;</i></a> -->
-</div>
-<p> &nbsp;</p>
-<p> &nbsp;</p>
-</p>
-</div>
-</div>
-</header>
-<body style="background-color:black;">
-</body>	
-<p>  <main style="background-color:black"></p>
-<section>
-	<div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -10px;background-color:black">
-		<h2 style="text-align: left;line-height: 1.5;width: 800px;color:Lime">
-			<strong>About me </strong> 
-		</h2>	
-	</div>	
-	<div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -25px;background-color:black">
-		<p style="text-align: justify;font-size: 1.2em;line-height: 1.5;width: 800px;color:White"> 
-			Andres is a distinguished researcher and engineer in the fields of image analysis, machine learning, and data analysis. His research focused on developing and application of methods for the analysis of large-scale medical, epidemiological, and clinical trials data.
-		</p>
-	</div>
-	<div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -25px;background-color:black">
-		<p style="text-align: justify;font-size: 1.2em;line-height: 1.5;width: 800px;color:White"> 
-			He has worked as researcher and leadership positions in prestigous research centers and hospitals such as ZIB Berlin, Moffit Cancer Center, and Erasmus MC Medical Center.
-		</p>
-	</div>	
-	<div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -25px;background-color:black">
-		<p style="text-align: justify;font-size: 1.2em;line-height: 1.5;width: 800px;color:White">
-			Andres has a broad background in statistics, computer science, machine learning, deep learning, and medical image analysis.
-		</p>
-	</div>	
-</section>
-<section style="background-color: black; padding: 20px 0;">
-    <!-- Education Title -->
-    <div style="max-width: 800px; margin: 0 auto; padding: 0 15px;">
-        <h2 style="color: Lime; line-height: 1.5; margin-bottom: 20px;">
-            <strong>Education</strong>
-        </h2>
-    </div>
-    
-    <!-- Logos Row - Center aligned images -->
-    <div style="max-width: 800px; margin: 0 auto; padding: 0 15px;">
-        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 30px; margin-bottom: 10px;">
-            <div style="width: 150px;">
-                <a href="https://www.javerianacali.edu.co/" target="_blank" style="display: flex; justify-content: center;">
-                    <img src="https://xandresariasx.github.io/Figures/puj_logo.png" alt="Javeriana University" style="height: auto; max-width: 100%;">
-                </a>
+<body>
+    <div class="conversation-container">
+        <!-- Character Panel --> 
+        <!-- <div class="character-panel"> -->
+            <div class="character-image-container">
+                <img src="https://img.freepik.com/vector-premium/ilustracion-abogado-su-escritorio_880099-26.jpg" 
+                     alt="Professional Assistant" 
+                     class="character-image"
+                     onerror="this.src='https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=face'">
             </div>
-            <div style="width: 150px;">
-                <a href="https://www.tue.nl/en/" target="_blank" style="display: flex; justify-content: center;">
-                    <img src="https://xandresariasx.github.io/Figures/tue_logo_grayscale.png" alt="Eindhoven University" style="height: auto; max-width: 100%;">
-                </a>
-            </div>
-            <div style="width: 200px;">
-                <a href="https://www.erasmusmc.nl/en/" target="_blank" style="display: flex; justify-content: center;">
-                    <img src="https://xandresariasx.github.io/Figures/erasmus_logo.png" alt="Erasmus University" style="height: auto; max-width: 100%;">
-                </a>
-            </div>
-        </div>
-    </div>
-    
-    <!-- University Names - Left aligned text -->
-    <div style="max-width: 800px; margin: 0 auto; padding: 0 15px;">
-        <div style="display: flex; flex-wrap: wrap; gap: 30px; margin-bottom: 10px;">
-            <p style="color: gray; font-size: 0.8em; margin: 0; width: 150px; text-align: left;">Javeriana University</p>
-            <p style="color: gray; font-size: 0.8em; margin: 0; width: 150px; text-align: left;">Eindhoven University of Technology</p>
-            <p style="color: gray; font-size: 0.8em; margin: 0; width: 200px; text-align: left;">Erasmus University</p>
-        </div>
-    </div>
-    
-    <!-- Degrees - Left aligned text -->
-    <div style="max-width: 800px; margin: 0 auto; padding: 0 15px;">
-        <div style="display: flex; flex-wrap: wrap; gap: 30px;">
-            <p style="color: gray; font-size: 0.8em; margin: 0; width: 150px; text-align: left;">BSc. Electronics Engineering</p>
-            <p style="color: gray; font-size: 0.8em; margin: 0; width: 150px; text-align: left;">MSc. Embedded Systems</p>
-            <p style="color: gray; font-size: 0.8em; margin: 0; width: 200px; text-align: left;">PhD. Medical Imaging</p>
-        </div>
-    </div>
-</section>
+			<!-- style="display: flex;align-items: center;justify-content: center;margin-top: -10px;background-color:black" -->
+            <!-- <div class="character-info"> -->
+                <!-- <div class="character-name">Dr. Elena Rodríguez</div> -->
+                <!-- <div class="character-title">Asistente Profesional</div> -->
+                <!-- <div class="character-description"> -->
+                    <!-- Especialista en inteligencia artificial y asistencia conversacional.  -->
+                    <!-- Lista para ayudarte con cualquier consulta. -->
+                <!-- </div> -->
+                <!-- <div class="status-indicator"> -->
+                    <!-- <div class="status-dot"></div> -->
+                    <!-- <div class="status-text">En línea</div> -->
+                <!-- </div> -->
+                <!-- <div class="typing-indicator" id="typing-indicator"> -->
+                    <!-- ✍️ Escribiendo respuesta... -->
+                <!-- </div> -->
+            <!-- </div> -->
+        <!-- </div> -->
 
-<section style="background-color: black; padding: 20px 0;">
-    <!-- Education Title -->
-    <div style="max-width: 800px; margin: 0 auto; padding: 0 15px;">
-        <h2 style="color: Lime; line-height: 1.5; margin-bottom: 0px;">
-            <strong>Experience</strong>
-        </h2>
-    </div>
-    
-    <!-- Logos Row - Center aligned images -->
-    <div style="max-width: 800px; margin: 0 auto; padding: 0 15px;">
-        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 30px; margin-bottom: 10px;">
-            <div style="width: 200px;">
-                <a href="https://www.erasmusmc.nl/en/" target="_blank" style="display: flex; justify-content: center;">
-                    <img src="https://xandresariasx.github.io/Figures/erasmus_logo.png" alt="Erasmus University" style="height: auto; max-width: 100%;">
-                </a>
-            </div>
-            <div style="width: 150px;">
-                <a href="https://www.moffitt.org/" target="_blank" style="display: flex; justify-content: center;">
-                    <img src="https://xandresariasx.github.io/Figures/Moffit_logo.jpg" alt="Moffitt" style="height: auto; max-width: 100%;">
-                </a>
-            </div>
-            <div style="width: 150px;">
-                <a href="https://www.zib.de/de" target="_blank" style="display: flex; justify-content: center;">
-                    <img src="https://xandresariasx.github.io/Figures/zib_logo.png" alt="zib" style="height: auto; max-width: 100%;">
-                </a>
-            </div>
-        </div>
-    </div>
-    
-    <!-- University Names - Left aligned text -->
-    <div style="max-width: 800px; margin: 0 auto; padding: 0 15px;">
-        <div style="display: flex; flex-wrap: wrap; gap: 30px; margin-bottom: 10px;">
-            <p style="color: gray; font-size: 0.8em; margin: 0; width: 200px; text-align: left;">Erasmus University</p>
-            <p style="color: gray; font-size: 0.8em; margin: 0; width: 150px; text-align: left;">Moffitt Cancer Center</p>
-            <p style="color: gray; font-size: 0.8em; margin: 0; width: 150px; text-align: left;">ZIB</p>
-        </div>
-    </div>
-    
-    <!-- Degrees - Left aligned text -->
-    <div style="max-width: 800px; margin: 0 auto; padding: 0 15px;">
-        <div style="display: flex; flex-wrap: wrap; gap: 30px;">
-            <p style="color: gray; font-size: 0.8em; margin: 0; width: 200px; text-align: left;">Doctoral Researcher</p>
-            <p style="color: gray; font-size: 0.8em; margin: 0; width: 150px; text-align: left;">Postdoctoral Researcher</p>
-            <p style="color: gray; font-size: 0.8em; margin: 0; width: 150px; text-align: left;">Associate Researcher</p>
-        </div>
-    </div>
-</section>
-
-<section>
-	<div style="max-width: 800px; margin: 0 auto; padding: 0 15px;">
-        <h2 style="color: Lime; line-height: 1.5; margin-bottom: 20px;">
-            <strong>Projects</strong>
-        </h2>
-    </div>
-    <div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -25px;background-color:black">
-		<p style="text-align: justify;font-size: 1.2em;line-height: 1.5;width: 800px;color:White"> 
-			<strong><i>Imaging predictors of cancer treatments:</i></strong>
-		</p>
-    </div>
-    <div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: 0px;background-color:black">
-	    <video width="800" controls loop autoplay muted><source src="https://xandresariasx.github.io/Videos/VideoPar_cropped.mp4" type=video/mp4></video> 					
-    </div>
-    <div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -15px;background-color:black">
-		<p style="text-align: center;font-size: 1.0em;line-height: 1.5;width: 800px;color:Gray"> 
-			Quantitative parameter maps before and after treatment of a liver tumor
-		</p>
-    </div>    	
-    <div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -10px;background-color:black">
-	    <ul style="margin-left: -25px;width: 785px">
-		<li> 
-			<a style="color:Gray;font-size: 1.0em" href="https://www.nature.com/articles/s41598-024-62470-9">A. Arias Lorza et al. <i>"Magnetic resonance imaging of tumor response to stroma-modifying pegvorhyaluronidase alpha (PEGPH20) therapy in early-phase clinical trials"</i>, 2023.</a>
-		</li>
-		<li> 
-			<a style="color:Gray;font-size: 1.0em" href="https://www.nature.com/articles/s41598-020-71246-w">A. Arias Lorza et al. <i>"Dose-response assessment by quantitative MRI in a phase 1 clinical study of the anti-cancer vascular disrupting agent crolibulin"</i>, 2020.</a>
-		</li>
-	   </ul>
+        <!-- Chat Panel --> 
+        <!-- <div class="chat-panel"> -->
+            <!-- <div class="conversation-header"> -->
+                <!-- <div class="conversation-title">Conversación con Dr. Elena Rodríguez</div> -->
+                <!-- <div class="conversation-subtitle">Asistente IA profesional - Siempre disponible para ayudarte</div> -->
+            <!-- </div> -->
+            <!-- <div class="conversation-messages" id="conversation-messages"> -->
+                <!-- Messages will appear here -->
+                <!-- <div class="message character-message"> -->
+                    <!-- ¡Buenos días! Soy la Dra. Elena Rodríguez, su asistente profesional.  -->
+                    <!-- ¿En qué puedo ayudarle hoy? -->
+                    <!-- <div class="message-time">Ahora mismo</div> -->
+                <!-- </div> -->
+            <!-- </div> -->
+            <!-- <div class="input-area"> -->
+                <!-- <input type="text" id="user-input" placeholder="Escribe tu mensaje o usa el micrófono..."> -->
+                <!-- <button class="voice-button" id="voice-button">🎤</button> -->
+                <!-- <button class="send-button" id="send-button">Enviar</button> -->
+            <!-- </div> -->
+        <!-- </div> -->
     </div>
 
-    <div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -15px;background-color:black">
-		<p style="text-align: justify;font-size: 1.2em;line-height: 1.5;width: 800px;color:White"> 
-			<strong><i>Image analysis of arteries:</i></strong>
-		</p>
-    </div>
-    <div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: 0px;background-color:black">
-	    <video width="400" controls loop autoplay muted><source src="https://xandresariasx.github.io/Videos/media1 (online-video-cutter.com).mp4" type=video/mp4></video> 					
-    </div>
-    <div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -15px;background-color:black">
-		<p style="text-align: center;font-size: 1.0em;line-height: 1.5;width: 800px;color:Gray"> 
-			Multi-modal segmentation and registration of the carotid artery
-		</p>
-    </div>    	
-    <div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -10px;background-color:black">
-	    <ul style="margin-left: -25px;width: 785px">
-		<li> 
-			<a style="color:Gray;font-size: 1.0em" href="https://ieeexplore.ieee.org/document/7331311">A. Arias Lorza et al. <i>"Carotid Artery Wall Segmentation in Multispectral MRI by Coupled Optimal Surface Graph Cuts"</i>, 2015</a>
-		</li>
-		<li> 
-			<a style="color:Gray;font-size: 1.0em" href="https://pubmed.ncbi.nlm.nih.gov/27743726/">A. Arias Lorza et al. <i>"Automated Registration of Freehand B-Mode Ultrasound and Magnetic Resonance Imaging of the Carotid Arteries Based on Geometric Features"</i>, 2016</a>
-		</li>
-		<li> 
-			<a style="color:Gray;font-size: 1.0em" href="https://xandresariasx.github.io/Documents/Thesis.pdf">A. Arias Lorza <i>"Image Analysis of the Carotid Artery: A (Semi-)Automatic Approach"</i>, 2017</a>
-		</li>    
-	   </ul>
-    </div>
-
-    <div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -15px;background-color:black">
-		<p style="text-align: justify;font-size: 1.2em;line-height: 1.5;width: 800px;color:White"> 
-			<strong><i>High-resolution reconstruction of dynamic knee MRI:</i></strong>
-		</p>
-    </div>
-    <div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: 0px;background-color:black">
-	    <video width="800" controls loop autoplay muted><source src="https://xandresariasx.github.io/Videos/Video_cropped.mp4" type=video/mp4></video> 					
-    </div>
-    <div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -15px;background-color:black">
-		<p style="text-align: center;font-size: 1.0em;line-height: 1.5;width: 800px;color:Gray"> 
-			Before and after the reconstruction of dynamic knee MRI
-		</p>
-    </div>    	
-    <div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -10px;background-color:black">
-	    <ul style="margin-left: -25px;width: 785px">
-		<li> 
-			<a style="color:Gray;font-size: 1.0em" href="https://xandresariasx.github.io/Documents/Knee_Dynamics.pdf">A. Arias Lorza et al. <i>"Image Registration of Dynamic MRI for Strain Analysis of Soft Tissue Structures in the Knee Joint using Elastix"</i>, 2023.</a>
-		</li>		
-	   </ul>
-    </div>	
-
-    <div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -15px;background-color:black">
-		<p style="text-align: justify;font-size: 1.2em;line-height: 1.5;width: 800px;color:White"> 
-			<strong><i>HR segmentation of LR images from public challenge datasets (work in progress):</i></strong>
-		</p>
-    </div>
-    <div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: 0px;background-color:black">
-	    <img src="https://xandresariasx.github.io/Figures/ImageRegistration.png" alt="" class="wp-image-21" style="width: 800px;height: auto" />
-    </div>
-    <div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -15px;background-color:black">
-		<p style="text-align: center;font-size: 1.0em;line-height: 1.5;width: 800px;color:Gray"> 
-			CT of the brain and MRI-CT after registration which could be used to train a DL model to translate CT&#8594;MRI&#8594;HR segmentation in CT 
-		</p>
-    </div>
-    <div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -10px;background-color:black">
-	    <ul style="margin-left: -25px;width: 785px">
-		<li> 
-			<a style="color:Gray;font-size: 1.0em" href="https://github.com/xandresariasx/Register-the-TopCoW"><i>https://github.com/xandresariasx/Register-the-TopCoW</i></a>
-		</li>		
-	   </ul>
-    </div>	
-
-	<div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -15px;background-color:black">
-		<p style="text-align: justify;font-size: 1.2em;line-height: 1.5;width: 800px;color:White"> 
-			<strong><i>New extended Tofts Model tool which includes spatial regularization evaluated in a DCE-MRI digital reference object of the brain:</i></strong>
-		</p>
-    </div>
-	<div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: 0px;background-color:black">
-	    <img src="https://xandresariasx.github.io/Figures/ToftsEstimation.png" alt="" class="wp-image-21" style="width: 800px;height: auto" />
-    </div>
-	<div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -15px;background-color:black">
-		<p style="text-align: center;font-size: 1.0em;line-height: 1.5;width: 800px;color:Gray"> 
-			Ground-truth and estimated parameters maps for images with and without noise
-		</p>
-    </div>
-	<div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -10px;background-color:black">
-	    <ul style="margin-left: -25px;width: 785px">
-		<li> 
-			<a style="color:Gray;font-size: 1.0em" href="https://github.com/xandresariasx/Extended-Tofts-Model-tool"><i>https://github.com/xandresariasx/Extended-Tofts-Model-tool</i></a>
-		</li>		
-	   </ul>
-    </div>	
-
-    <div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -15px;background-color:black">
-		<p style="text-align: justify;font-size: 1.2em;line-height: 1.5;width: 800px;color:White"> 
-			<strong><i>AI projects (in progress):</i></strong>
-		</p>
-    </div>
-    <div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -10px;background-color:black">
-	    <ul style="margin-left: -25px;width: 785px">
-		<li> 
-			<a style="color:Gray;font-size: 1.0em" href="https://xandresariasx.github.io/Project1.html">Project 1</a>
-		</li>		
-	   </ul>
-    </div>	
-	
-</section>
-
-<p>  </main></p>
-
-
-
-
-
-<p><br />
-</p>
-
-<!-- wp:embed {"url":"https://www.youtube.com/watch?v=X9S3A1EpEZY","type":"video","providerNameSlug":"youtube","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio","style":{"spacing":{"margin":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50","left":"var:preset|spacing|40","right":"var:preset|spacing|40"}}}} -->
-<!-- /wp:embed -->
+    <script src="app.js"></script>
+</body>
+</html>
