@@ -30,27 +30,30 @@
             overflow: hidden;
         }
 
-        /* Character Panel */
+        /* Character Panel - CENTERED VERSION */
         .character-panel {
-            width: 350px;
+            width: 100%; /* Take full width */
             background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: center; /* Center horizontally */
+            justify-content: center; /* Center vertically */
             padding: 30px 20px;
             color: white;
         }
 
         .character-image-container {
-            width: 250px;
-            height: 250px;
+            width: 300px; /* Slightly larger for center focus */
+            height: 300px;
             border-radius: 20px;
             overflow: hidden;
             margin-bottom: 25px;
-			justify-content: center;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
             border: 4px solid #ecf0f1;
             background: #ecf0f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .character-image {
@@ -267,53 +270,51 @@
 </head>
 <body>
     <div class="conversation-container">
-        <!-- Character Panel --> 
-        <!-- <div class="character-panel"> -->			
+        <!-- Character Panel - CENTERED VERSION -->
+        <div class="character-panel">			
             <div class="character-image-container">
                 <img src="https://img.freepik.com/vector-premium/ilustracion-abogado-su-escritorio_880099-26.jpg" 
                      alt="Professional Assistant" 
                      class="character-image"
-					 style="display: flex;align-items: center;justify-content: center;margin-top: -10px"
                      onerror="this.src='https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=face'">
             </div>
-			<!-- style="display: flex;align-items: center;justify-content: center;margin-top: -10px;background-color:black" -->
-            <!-- <div class="character-info"> -->
-                <!-- <div class="character-name">Dr. Elena Rodríguez</div> -->
-                <!-- <div class="character-title">Asistente Profesional</div> -->
-                <!-- <div class="character-description"> -->
-                    <!-- Especialista en inteligencia artificial y asistencia conversacional.  -->
-                    <!-- Lista para ayudarte con cualquier consulta. -->
-                <!-- </div> -->
-                <!-- <div class="status-indicator"> -->
-                    <!-- <div class="status-dot"></div> -->
-                    <!-- <div class="status-text">En línea</div> -->
-                <!-- </div> -->
-                <!-- <div class="typing-indicator" id="typing-indicator"> -->
-                    <!-- ✍️ Escribiendo respuesta... -->
-                <!-- </div> -->
-            <!-- </div> -->
-        <!-- </div> -->
+            <div class="character-info">
+                <div class="character-name">Dr. Elena Rodríguez</div>
+                <div class="character-title">Asistente Profesional</div>
+                <div class="character-description">
+                    Especialista en inteligencia artificial y asistencia conversacional. 
+                    Lista para ayudarte con cualquier consulta.
+                </div>
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <div class="status-text">En línea</div>
+                </div>
+                <div class="typing-indicator" id="typing-indicator">
+                    ✍️ Escribiendo respuesta...
+                </div>
+            </div>
+        </div>
 
-        <!-- Chat Panel --> 
-        <!-- <div class="chat-panel"> -->
-            <!-- <div class="conversation-header"> -->
-                <!-- <div class="conversation-title">Conversación con Dr. Elena Rodríguez</div> -->
-                <!-- <div class="conversation-subtitle">Asistente IA profesional - Siempre disponible para ayudarte</div> -->
-            <!-- </div> -->
-            <!-- <div class="conversation-messages" id="conversation-messages"> -->
+        <!-- Chat Panel -->
+        <div class="chat-panel">
+            <div class="conversation-header">
+                <div class="conversation-title">Conversación con Dr. Elena Rodríguez</div>
+                <div class="conversation-subtitle">Asistente IA profesional - Siempre disponible para ayudarte</div>
+            </div>
+            <div class="conversation-messages" id="conversation-messages">
                 <!-- Messages will appear here -->
-                <!-- <div class="message character-message"> -->
-                    <!-- ¡Buenos días! Soy la Dra. Elena Rodríguez, su asistente profesional.  -->
-                    <!-- ¿En qué puedo ayudarle hoy? -->
-                    <!-- <div class="message-time">Ahora mismo</div> -->
-                <!-- </div> -->
-            <!-- </div> -->
-            <!-- <div class="input-area"> -->
-                <!-- <input type="text" id="user-input" placeholder="Escribe tu mensaje o usa el micrófono..."> -->
-                <!-- <button class="voice-button" id="voice-button">🎤</button> -->
-                <!-- <button class="send-button" id="send-button">Enviar</button> -->
-            <!-- </div> -->
-        <!-- </div> -->
+                <div class="message character-message">
+                    ¡Buenos días! Soy la Dra. Elena Rodríguez, su asistente profesional. 
+                    ¿En qué puedo ayudarle hoy?
+                    <div class="message-time">Ahora mismo</div>
+                </div>
+            </div>
+            <div class="input-area">
+                <input type="text" id="user-input" placeholder="Escribe tu mensaje o usa el micrófono...">
+                <button class="voice-button" id="voice-button">🎤</button>
+                <button class="send-button" id="send-button">Enviar</button>
+            </div>
+        </div>
     </div>
 
     <script src="app.js"></script>
