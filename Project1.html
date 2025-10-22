@@ -22,7 +22,7 @@
         }
 
         .main-container {
-            width: 900px;
+            width: 350px; /* Same as image width */
             height: 800px;
             display: flex;
             flex-direction: column;
@@ -34,7 +34,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 0; /* Remove padding to match width exactly */
         }
 
         .character-image-container {
@@ -53,7 +53,7 @@
             object-fit: cover;
         }
 
-        /* Chat Panel - BELOW THE IMAGE */
+        /* Chat Panel - SAME WIDTH AS IMAGE */
         .chat-panel {
             flex: 1;
             background: white;
@@ -62,42 +62,27 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-        }
-
-        .conversation-header {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            padding: 20px 30px;
-            color: white;
-        }
-
-        .conversation-title {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .conversation-subtitle {
-            font-size: 14px;
-            opacity: 0.8;
+            width: 100%; /* Take full width of main-container */
         }
 
         .conversation-messages {
             flex: 1;
-            padding: 30px;
+            padding: 20px; /* Reduced padding for narrower width */
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px; /* Slightly smaller gap */
             background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.03"><rect fill="%23667eea" width="100" height="100"/></svg>');
         }
 
         .message {
-            max-width: 70%;
-            padding: 15px 20px;
+            max-width: 85%; /* Increased for narrower layout */
+            padding: 12px 16px; /* Slightly smaller padding */
             border-radius: 18px;
             position: relative;
             animation: fadeIn 0.3s ease;
             line-height: 1.4;
+            font-size: 14px; /* Slightly smaller font */
         }
 
         @keyframes fadeIn {
@@ -123,28 +108,28 @@
         }
 
         .message-time {
-            font-size: 11px;
+            font-size: 10px; /* Slightly smaller */
             opacity: 0.7;
             margin-top: 5px;
             text-align: right;
         }
 
         .input-area {
-            padding: 20px 30px;
+            padding: 15px 20px; /* Reduced padding */
             background: white;
             border-top: 1px solid #dee2e6;
             display: flex;
-            gap: 12px;
+            gap: 10px; /* Slightly smaller gap */
             align-items: center;
         }
 
         #user-input {
             flex: 1;
-            padding: 15px 20px;
+            padding: 12px 16px; /* Smaller padding */
             border: 2px solid #e9ecef;
             border-radius: 25px;
             outline: none;
-            font-size: 16px;
+            font-size: 14px; /* Smaller font */
             transition: all 0.3s ease;
             background: #f8f9fa;
         }
@@ -156,8 +141,8 @@
         }
 
         .voice-button {
-            width: 50px;
-            height: 50px;
+            width: 45px; /* Slightly smaller */
+            height: 45px;
             border-radius: 50%;
             border: none;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -166,7 +151,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 16px; /* Slightly smaller */
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
@@ -187,13 +172,13 @@
         }
 
         .send-button {
-            padding: 15px 25px;
+            padding: 12px 20px; /* Smaller padding */
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
             border-radius: 25px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px; /* Smaller font */
             font-weight: 600;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
@@ -233,6 +218,10 @@
             display: none;
             text-align: center;
             font-size: 14px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 12px;
+            border-radius: 15px;
+            width: 100%;
         }
     </style>
 </head>
@@ -253,7 +242,7 @@
             ✍️ Escribiendo respuesta...
         </div>
 
-        <!-- Chat Panel - BELOW THE IMAGE -->
+        <!-- Chat Panel - SAME WIDTH AS IMAGE -->
         <div class="chat-panel">
             <div class="conversation-messages" id="conversation-messages">
                 <!-- Messages will appear here -->
