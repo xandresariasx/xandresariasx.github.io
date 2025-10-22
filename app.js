@@ -2,7 +2,7 @@
 const conversationMessages = document.getElementById("conversation-messages");
 const userInput = document.getElementById("user-input");
 const sendButton = document.getElementById("send-button");
-const voiceButton = document.getElementById("voice-button"); // Changed from micButton to voiceButton
+const voiceButton = document.getElementById("voice-button");
 
 // Speech Recognition (Web Speech API)
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -19,28 +19,18 @@ let isProcessing = false;
 
 // Character animation elements
 const typingIndicator = document.getElementById('typing-indicator');
-const statusDot = document.querySelector('.status-dot');
-const statusText = document.querySelector('.status-text');
 
-// Professional character animations
+// Professional character animations - UPDATED (removed statusDot and statusText references)
 function showTypingIndicator() {
-    typingIndicator.style.display = 'block';
-    statusDot.style.background = '#f39c12';
-    statusText.textContent = 'Escribiendo...';
-    statusText.style.color = '#f39c12';
+    if (typingIndicator) {
+        typingIndicator.style.display = 'block';
+    }
 }
 
 function hideTypingIndicator() {
-    typingIndicator.style.display = 'none';
-    statusDot.style.background = '#2ecc71';
-    statusText.textContent = 'En línea';
-    statusText.style.color = '#2ecc71';
-}
-
-function setCharacterStatus(status, color) {
-    statusDot.style.background = color;
-    statusText.textContent = status;
-    statusText.style.color = color;
+    if (typingIndicator) {
+        typingIndicator.style.display = 'none';
+    }
 }
 
 // Voice recognition with visual feedback
@@ -87,17 +77,14 @@ async function sendMessage() {
 
     // Show typing indicator
     showTypingIndicator();
-    setCharacterStatus('Pensando...', '#3498db');
 
     try {
         const aiResponse = await getAIResponse(message);
         hideTypingIndicator();
-        setCharacterStatus('En línea', '#2ecc71');
         displayMessage(aiResponse, "character");
         speak(aiResponse);
     } catch (error) {
         hideTypingIndicator();
-        setCharacterStatus('Error de conexión', '#e74c3c');
         displayMessage("Lo siento, hubo un error de conexión. Por favor, intenta de nuevo.", "character");
     } finally {
         isProcessing = false;
