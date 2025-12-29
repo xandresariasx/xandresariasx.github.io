@@ -1,6 +1,300 @@
 <head>
   <title>Dr.Arias-Lorza</title>
   <link rel="icon" type="image/x-icon" href="https://xandresariasx.github.io/Figures/favicon.ico">
+	<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #2c3e50, #1a252f);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            border-bottom: 5px solid #3498db;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #3498db;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .donation-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem 0;
+        }
+
+        .donation-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #3498db;
+            font-size: 2.2rem;
+        }
+
+        h3 {
+            color: #3498db;
+            margin: 1.5rem 0 1rem;
+            font-size: 1.4rem;
+        }
+
+        .donation-intro {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: #555;
+        }
+
+        .donation-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .donation-amount {
+            padding: 1.5rem 0.5rem;
+            text-align: center;
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .donation-amount:hover {
+            border-color: #3498db;
+            background-color: #e3f2fd;
+            transform: translateY(-2px);
+        }
+
+        .donation-amount.selected {
+            border-color: #2ecc71;
+            background-color: #d5f4e6;
+            color: #27ae60;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(46, 204, 113, 0.2);
+        }
+
+        .custom-amount {
+            margin: 2rem 0;
+        }
+
+        .custom-amount label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .custom-amount input {
+            width: 100%;
+            padding: 1.2rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .custom-amount input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .payment-methods {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .payment-method {
+            flex: 1;
+            min-width: 150px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method i {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+            color: #555;
+        }
+
+        .payment-method:hover {
+            border-color: #3498db;
+            background-color: #e3f2fd;
+            transform: translateY(-2px);
+        }
+
+        .payment-method.selected {
+            border-color: #2ecc71;
+            background-color: #d5f4e6;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(46, 204, 113, 0.2);
+        }
+
+        .payment-method div {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 1.5rem;
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+        }
+
+        .btn:hover {
+            background: linear-gradient(to right, #2980b9, #1c6ea4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(41, 128, 185, 0.3);
+        }
+
+        .btn i {
+            margin-right: 10px;
+        }
+
+        .security-notice {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-left: 4px solid #2ecc71;
+        }
+
+        .security-notice h4 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .security-notice p {
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: #ecf0f1;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .security-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            color: #95a5a6;
+        }
+
+        @media (max-width: 768px) {
+            .donation-card {
+                padding: 2rem;
+                margin: 1rem;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
+            
+            .donation-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .payment-methods {
+                flex-direction: column;
+            }
+            
+            .payment-method {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .donation-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .donation-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <header>
 <!-- <div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: 10px;margin-left: 10px;background-color:black">	
@@ -341,7 +635,33 @@
 			</li>
 	   </ul>
     </div>	
-</section>	
+</section>
+<section>
+	<div style="max-width: 800px; margin: 0 auto; padding: 0 15px;margin-top: 50px">
+        <h2 style="color: Lime; line-height: 1.5; margin-bottom: 20px;"> 
+            <strong>Donate</strong>
+        </h2>
+    </div>
+	<div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -25px;background-color:black">
+		<p style="text-align: justify;font-size: 1.2em;line-height: 1.5;width: 800px;color:White"> 
+			Thank you for considering a donation to support my research.
+		</p>
+	</div>
+	<p style="text-align: justify;font-size: 1.2em;line-height: 1.5;width: 800px;color:White">
+		<strong>Select Donation Amount</strong> 
+	</p>
+	<div class="donation-options">
+		<div class="donation-amount" data-amount="25">$25</div>
+		<div class="donation-amount" data-amount="50">$50</div>
+		<div class="donation-amount selected" data-amount="100">$100</div>
+		<div class="donation-amount" data-amount="250">$250</div>
+		<div class="donation-amount" data-amount="500">$500</div>
+		<div class="donation-amount" data-amount="1000">$1,000</div>
+	</div>
+
+
+	
+</section>
 
 <p>  </main></p>
 
