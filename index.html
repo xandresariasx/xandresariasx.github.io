@@ -256,6 +256,81 @@
 </div>
 </header>
 <body style="background-color:black;">
+	 <script>
+        // Donation amount selection
+        const donationAmounts = document.querySelectorAll('.donation-amount');
+        const customAmountInput = document.getElementById('custom-amount');
+        
+        donationAmounts.forEach(amount => {
+            amount.addEventListener('click', function() {
+                // Remove selected class from all amounts
+                donationAmounts.forEach(a => a.classList.remove('selected'));
+                // Add selected class to clicked amount
+                this.classList.add('selected');
+                // Clear custom amount input
+                customAmountInput.value = '';
+            });
+        });
+        
+        // Custom amount input clears selected preset amount
+        customAmountInput.addEventListener('input', function() {
+            donationAmounts.forEach(a => a.classList.remove('selected'));
+        });
+        
+        // Payment method selection
+        const paymentMethods = document.querySelectorAll('.payment-method');
+        
+        paymentMethods.forEach(method => {
+            method.addEventListener('click', function() {
+                // Remove selected class from all methods
+                paymentMethods.forEach(m => m.classList.remove('selected'));
+                // Add selected class to clicked method
+                this.classList.add('selected');
+            });
+        });
+        
+        // Donate button functionality
+        document.getElementById('donate-button').addEventListener('click', function() {
+            let amount = 0;
+            const selectedAmount = document.querySelector('.donation-amount.selected');
+            
+            if (selectedAmount) {
+                amount = selectedAmount.getAttribute('data-amount');
+            } else if (customAmountInput.value) {
+                amount = customAmountInput.value;
+            }
+            
+            if (!amount || amount <= 0) {
+                alert('Please select or enter a donation amount.');
+                return;
+            }
+            
+            const selectedMethod = document.querySelector('.payment-method.selected').getAttribute('data-method');
+            
+            // In a real implementation, this would connect to a payment processor
+            // For this example, we'll just show a confirmation message
+            const formattedAmount = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD'
+            }).format(amount);
+            
+            alert(`Thank you for your donation of ${formattedAmount}! You selected to pay via ${getMethodName(selectedMethod)}. This is a demo - in a real implementation, you would now be redirected to a secure payment page.`);
+            
+            // Reset form
+            donationAmounts.forEach(a => a.classList.remove('selected'));
+            donationAmounts[2].classList.add('selected'); // Select $100 by default
+            customAmountInput.value = '';
+        });
+        
+        function getMethodName(method) {
+            switch(method) {
+                case 'card': return 'Credit/Debit Card';
+                case 'paypal': return 'PayPal';
+                case 'bank': return 'Bank Transfer';
+                default: return 'Unknown Method';
+            }
+        }
+    </script>
 </body>	
 <p>  <main style="background-color:black"></p>
 <section>
