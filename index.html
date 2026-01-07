@@ -558,153 +558,146 @@
     </div>	
 </section>
 <section>
-	<div style="max-width: 800px; margin: 0 auto; padding: 0 15px;margin-top: 50px">
+    <div style="max-width: 800px; margin: 0 auto; padding: 0 15px;margin-top: 50px">
         <h2 style="color: Lime; line-height: 1.5; margin-bottom: 20px;"> 
             <strong>Donate</strong>
         </h2>
     </div>
-	<div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -25px;background-color:black">
-		<p style="text-align: justify;font-size: 1.2em;line-height: 1.5;width: 800px;color:White"> 
-			Thank you for considering a donation to support my research.
-		</p>
-	</div>
-	<div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -25px;background-color:black">
-		<p style="text-align: justify;font-size: 1.2em;line-height: 1.5;width: 800px;color:White"> 
-			<strong>Select Donation Amount:</strong> 
-		</p>
-	</div>
+    <div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -25px;background-color:black">
+        <p style="text-align: justify;font-size: 1.2em;line-height: 1.5;width: 800px;color:White"> 
+            Thank you for considering a donation to support my research.
+        </p>
+    </div>
+    <div class="nfd-py-md wp-block-group" style="display: flex;align-items: center;justify-content: center;margin-top: -25px;background-color:black">
+        <p style="text-align: justify;font-size: 1.2em;line-height: 1.5;width: 800px;color:White"> 
+            <strong>Select Donation Amount:</strong> 
+        </p>
+    </div>
 
-	<div style="max-width: 800px; margin: 0 auto; padding: 0 15px;margin-top: 0px">
-		<div class="donation-options" style="display: flex;align-items: left;justify-content: left;margin-top: 0px;background-color:black">
-			<div class="donation-amount" data-amount="1">$1</div>
-			<div class="donation-amount" data-amount="2">$2</div>
-			<div class="donation-amount selected" data-amount="5">$5</div>
-			<div class="donation-amount" data-amount="10">$10</div>
-			<div class="donation-amount" data-amount="20">$20</div>
-		</div>
-	</div>
-	<div style="max-width: 800px; margin: 0 auto; padding: 0 15px;margin-top: 0px">
-		<div class="payment-methods">
-	    	<div class="payment-method selected" data-method="card">
-				<i class="far fa-credit-card"></i>
-				<div>Credit/Debit Card</div>
-			</div>
-			<div class="payment-method" data-method="paypal">
-				<i class="fab fa-paypal"></i>
-				<div>PayPal</div>
-			</div>
-			<div class="payment-method" data-method="bank">
-				<i class="fas fa-university"></i>
-				<div>Bank Transfer</div>
-			</div>
-		</div>
-	</div>
-                
-	<div style="max-width: 800px; margin: 0 auto; padding: 0 15px;margin-top: 0px">
-		<h4 style="color:White"><i class="fas fa-lock"></i> Secure & Encrypted</h4>
-		<p style="text-align: justify;font-size: 1.2em;line-height: 1.5;width: 800px;color:White">
-			Your donation is processed through a secure, encrypted connection. All financial information is protected and will not be stored on our servers.</p>
-	</div>
-
-	<!-- PayPal Smart Button Container -->
-	<div style="max-width: 800px; margin: 0 auto; padding: 0 15px;margin-top: 0px">
-	    <div style="max-width: 800px; margin: 0 auto; padding: 0 15px;margin-top: 30px">
-	        <div id="paypal-button-container"></div>
-	    </div>
-	</div>
-
-	<!-- <div style="max-width: 800px; margin: 0 auto; padding: 0 15px;margin-top: 0px">
-		<button class="btn" id="donate-button">
-			<i class="fas fa-heart"></i> Donate Now
-		</button>
-	</div>	 -->
-	
+    <div style="max-width: 800px; margin: 0 auto; padding: 0 15px;margin-top: 0px">
+        <div class="donation-options" style="display: flex;align-items: left;justify-content: left;margin-top: 0px;background-color:black">
+            <div class="donation-amount" data-amount="1">$1</div>
+            <div class="donation-amount" data-amount="2">$2</div>
+            <div class="donation-amount selected" data-amount="5">$5</div>
+            <div class="donation-amount" data-amount="10">$10</div>
+            <div class="donation-amount" data-amount="20">$20</div>
+        </div>
+    </div>
+    
+    <!-- PayPal Smart Button Container -->
+    <div style="max-width: 800px; margin: 0 auto; padding: 0 15px;margin-top: 30px">
+        <div id="paypal-button-container"></div>
+    </div>
+    
+    <div style="max-width: 800px; margin: 0 auto; padding: 0 15px;margin-top: 30px">
+        <h4 style="color:White"><i class="fas fa-lock"></i> Secure & Encrypted</h4>
+        <p style="text-align: justify;font-size: 1.2em;line-height: 1.5;width: 800px;color:White">
+            Your donation is processed through a secure, encrypted connection. All financial information is protected and will not be stored on our servers.</p>
+    </div>
 </section>
 
+<!-- PayPal SDK - ADD THIS TO YOUR <head> SECTION or right before closing </body> -->
 <script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID&currency=USD"></script>
+
 <script>
     // Donation amount selection
     const donationAmounts = document.querySelectorAll('.donation-amount');
     
     donationAmounts.forEach(amount => {
         amount.addEventListener('click', function() {
-            // Remove selected class from all amounts
             donationAmounts.forEach(a => a.classList.remove('selected'));
-            // Add selected class to clicked amount
             this.classList.add('selected');
+            updatePayPalButton();
         });
     });
     
-    // Payment method selection
+    // Payment method selection (if you still want to show payment methods)
     const paymentMethods = document.querySelectorAll('.payment-method');
     
     paymentMethods.forEach(method => {
         method.addEventListener('click', function() {
-            console.log('Payment method clicked:', this); // Debug log
-            // Remove selected class from all methods
             paymentMethods.forEach(m => m.classList.remove('selected'));
-            // Add selected class to clicked method
             this.classList.add('selected');
         });
     });
     
-    // Donate button functionality
-    document.getElementById('donate-button').addEventListener('click', function() {
-        let amount = 0;
+    // Function to update PayPal button with selected amount
+    function updatePayPalButton() {
         const selectedAmount = document.querySelector('.donation-amount.selected');
+        const amount = selectedAmount ? selectedAmount.getAttribute('data-amount') : '5';
         
-        if (selectedAmount) {
-            amount = selectedAmount.getAttribute('data-amount');
-        }
+        // Clear existing PayPal button
+        document.getElementById('paypal-button-container').innerHTML = '';
         
-        if (!amount || amount <= 0) {
-            alert('Please select a donation amount.');
-            return;
-        }
-        
-        const selectedMethod = document.querySelector('.payment-method.selected');
-        if (!selectedMethod) {
-            alert('Please select a payment method.');
-            return;
-        }
-        
-        const methodName = selectedMethod.getAttribute('data-method');
-        
-        // In a real implementation, this would connect to a payment processor
-        // For this example, we'll just show a confirmation message
-        const formattedAmount = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD'
-        }).format(amount);
-        
-        alert(`Thank you for your donation of ${formattedAmount}! You selected to pay via ${getMethodName(methodName)}. This is a demo - in a real implementation, you would now be redirected to a secure payment page.`);
-        
-        // Reset form (optional)
-        // donationAmounts.forEach(a => a.classList.remove('selected'));
-        // donationAmounts[2].classList.add('selected'); // Select $5 by default
-    });
-    
-    function getMethodName(method) {
-        switch(method) {
-            case 'card': return 'Credit/Debit Card';
-            case 'paypal': return 'PayPal';
-            case 'bank': return 'Bank Transfer';
-            default: return 'Unknown Method';
-        }
+        // Render new PayPal button with updated amount
+        paypal.Buttons({
+            style: {
+                layout: 'vertical',
+                color: 'gold',
+                shape: 'pill',
+                label: 'donate',
+                height: 50
+            },
+            
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: amount,
+                            currency_code: 'USD'
+                        },
+                        description: 'Donation to Dr. Andres M. Arias Lorza Research',
+                        custom_id: 'research_donation'
+                    }]
+                });
+            },
+            
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    // Show success message
+                    alert(`Thank you for your donation of $${amount}! Transaction ID: ${details.id}`);
+                    
+                    // You can also redirect to a thank you page
+                    // window.location.href = 'thank-you.html';
+                    
+                    // Or send data to your server
+                    /*
+                    fetch('/save-donation', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            amount: amount,
+                            transactionId: details.id,
+                            donorEmail: details.payer.email_address,
+                            donorName: details.payer.name.given_name + ' ' + details.payer.name.surname
+                        })
+                    });
+                    */
+                });
+            },
+            
+            onError: function(err) {
+                console.error('PayPal error:', err);
+                alert('There was an error processing your donation. Please try again.');
+            },
+            
+            onCancel: function(data) {
+                // User cancelled the payment
+                console.log('Payment cancelled by user');
+            }
+        }).render('#paypal-button-container');
     }
     
-    // Initialize with $5 and Credit/Debit Card selected
+    // Initialize with $5 selected
     document.addEventListener('DOMContentLoaded', function() {
-        // Make sure $5 is selected by default
         if (donationAmounts.length >= 3) {
             donationAmounts[2].classList.add('selected');
         }
         
-        // Make sure Credit/Debit Card is selected by default
-        const cardMethod = document.querySelector('.payment-method[data-method="card"]');
-        if (cardMethod) {
-            cardMethod.classList.add('selected');
-        }
+        // Initialize PayPal button
+        updatePayPalButton();
     });
 </script>
 
